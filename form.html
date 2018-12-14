@@ -20,23 +20,26 @@
 
 <body>
     <div class="container">
-
-
-        <form id="form">
+        <form id="form" action="index.html">
             <div class="form-group">
-                <label for="exampleInputEmail1">Email address</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" name="email">
+                <label for="name">Name</label>
+                <input type="name" class="form-control" id="name" aria-describedby="nameHelp" placeholder="Enter name" name="name">
+                <small id="nameHelp" class="form-text text-muted">We'll never share your name with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" name="email">
                 <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
             </div>
             <div class="form-group">
-                <label for="exampleInputPassword1">Password</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password" name="password">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
             </div>
             <div class="form-group form-check">
                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                 <label class="form-check-label" for="exampleCheck1">Check me out</label>
             </div>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary" id="insert">Submit</button>
         </form>
     </div>
 
@@ -44,56 +47,106 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 
     <script>
-        $(function() {
-            $.validator.setDefaults({
-                highlight: function(element) {
-                    $(element).closest('.form-group').addClass('has-error');
-                },
-                unhighlight: function(element) {
-                    $(element).closest('.form-group').removeClass('has-error');
-                },
-                errorElement: 'span',
-                errorClass: 'help-block',
-                errorPlacement: function(error, element) {
-                    if (element.parent('.controls').length) {
-                        error.insertAfter(element.parent());
-                    } else {
-                        error.insertAfter(element);
-                    }
+        $.validator.setDefaults({
+            highlight: function(element) {
+                $(element).closest('.form-group').addClass('has-error');
+            },
+            unhighlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-error');
+            },
+            errorElement: 'span',
+            errorClass: 'help-block',
+            errorPlacement: function(error, element) {
+                if (element.parent('.controls').length) {
+                    error.insertAfter(element.parent());
+                } else {
+                    error.insertAfter(element);
                 }
-            });
-
-            // jQuery Validation Plugin的套用
-            var validate = $('#form').validate({
-                /**
-                 * validate 規則設定
-                 */
-                rules: {
-                    password: {
-                        required: true,
-                        minlength: 6,
-                        maxlength: 30
-                    },
-                    email: {
-                        required: true,
-                        maxlength: 1000
-                    }
-                },
-                /**
-                 * validate 訊息設定
-                 */
-                messages: {
-                    password: "沒輸入姓名或者名稱小於六個字元。",
-
-                    email: "請輸入內容。",
-                    // maxlength: jQuery.format("詢問內容請輸入 1000 字以内。")
-
-                }
-            });
-
+            }
         });
+
+        // jQuery Validation Plugin的套用
+        var validate = $('#form').validate({
+            /**
+             * validate 規則設定
+             */
+            rules: {
+                name: {
+                    required: true
+                },
+                password: {
+                    required: true,
+                    minlength: 6,
+                    maxlength: 30
+                },
+                email: {
+                    required: true,
+                    email: true,
+                    maxlength: 1000
+                }
+            },
+            /**
+             * validate 訊息設定
+             */
+            messages: {
+                name: {
+                    required: "請輸入名稱"
+                },
+                password: {
+                    required: "請輸入密碼。",
+                    minlength: "密碼需大於六個英數字",
+                    maxlength: "密碼需小於三十字元"
+                },
+                email: {
+                    required: "請輸入信箱。",
+                    email: "格式不對。"
+                }
+                // maxlength: jQuery.format("詢問內容請輸入 1000 字以内。")
+            }
+        });
+
+
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAN29JToq7jGGiol4xRHWPk0lAB_U_kGPY",
+            authDomain: "artificial-intelligence-8da03.firebaseapp.com",
+            databaseURL: "https://artificial-intelligence-8da03.firebaseio.com",
+            projectId: "artificial-intelligence-8da03",
+            storageBucket: "artificial-intelligence-8da03.appspot.com",
+            messagingSenderId: "1095359509219"
+        };
+
+        firebase.initializeApp(config);
+
+        var root = firebase.database().ref();
+
+        $("#insert").click(function() {
+
+            var name = $("#name").val()
+            var email = $("#email").val()
+            var password = $("#password").val()
+
+            console.log(name, email, password)
+
+            if (!validate.form()) {
+                return false; //doesn't validate
+            } else {
+                //form is validated do your work
+                var root = firebase.database().ref();
+
+                var msgRef = root.child(name);
+
+                msgRef.push({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+            }
+
+        })
     </script>
 
 </body>
