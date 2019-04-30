@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</head>
+
+<div class="p-3 h2 header">
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                Value to Firebase
+            </div>
+            <div class="col-6">
+                Search Value
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <div class="form-label-group">
+                <input type="text" id="name" class="form-control" placeholder="Username" required autofocus>
+                <label for="inputUserame">Username</label>
+            </div>
+
+            <div class="form-label-group">
+                <input type="email" id="email" class="form-control" placeholder="Email address" required>
+                <label for="inputEmail">Email address</label>
+            </div>
+
+            <div class="form-label-group">
+                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                <label for="inputPassword">Password</label>
+            </div>
+
+            <button class="btn btn-lg btn-primary btn-block text-uppercase signup" id="insert">註冊</button>
+
+            <ul id="data"></ul>
+        </div>
+        <div class="col-6">
+
+            <div class="form-label-group">
+                <input type="text" id="value-search" class="form-control" placeholder="搜尋" required autofocus>
+                <label for="inputUserame">搜尋</label>
+            </div>
+            <button class="btn btn-lg btn-primary btn-block text-uppercase signup" id="input-search">註冊</button>
+
+            <ul id="query"></ul>
+        </div>
+    </div>
+
+</div>
+
+<body>
+    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
+
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyAN29JToq7jGGiol4xRHWPk0lAB_U_kGPY",
+            authDomain: "artificial-intelligence-8da03.firebaseapp.com",
+            databaseURL: "https://artificial-intelligence-8da03.firebaseio.com",
+            projectId: "artificial-intelligence-8da03",
+            storageBucket: "artificial-intelligence-8da03.appspot.com",
+            messagingSenderId: "1095359509219"
+        };
+
+        firebase.initializeApp(config);
+
+        $(document).ready(function() {
+
+            var root = firebase.database().ref();
+
+            $("#insert").click(function() {
+
+                // value to firebase with json object
+                var name = $("#name").val()
+                var email = $("#email").val()
+                var password = $("#password").val()
+
+                var msgRef = root.child(name);
+
+                msgRef.push({
+                    name: name,
+                    email: email,
+                    password: password
+                })
+
+                // var personData = {
+                // }
+                // console.log(personData)
+                //msgShow = `<li>${personData}</li>`
+                //$("#query").html(msgShow);
+
+                //輸出 item.name 
+                msgRef.on("value", function(snap) {
+                    console.log(snap.val())
+                    var alldata = snap.val();
+                    var list = '';
+                    $.each(alldata, function(i, item) {
+                        list = `${list}<li>${item.name}</li>`
+                        console.log('each', i, item);
+                        console.log(item.name)
+                    })
+
+                    $("#data").html(list);
+                })
+
+                $("#name").val('');
+                $("#mail").val('');
+                $("#phone").val('');
+            })
+
+            $("#input-search").click(function() {
+                var search = $("#type-search").val()
+                var searchRef = root.child(search);
+                searchRef.on("value", function(snap) {
+                    var val1 = snap.val();
+                    var list = ''
+                    $.each(val1, function(i, item) {
+                        list = `${list}<li>${item.name}</li>`
+                    })
+                    $("#query").html(list)
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>

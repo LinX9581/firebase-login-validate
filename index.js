@@ -14,10 +14,13 @@ app.get('/login', function(req, res) {
     res.sendFile(__dirname + '/login.html');
 });
 
-app.get('/signup', function(req, res) {
-    res.sendFile(__dirname + '/signup.html');
+app.get('/realtime', function(req, res) {
+    res.sendFile(__dirname + '/realtimefirebase.html');
 });
 
+app.get('/validate', function(req, res) {
+    res.sendFile(__dirname + '/validatejsform.html');
+});
 
 http.listen(port, function() {
     console.log('listening on *:' + port);

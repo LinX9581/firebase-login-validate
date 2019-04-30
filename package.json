@@ -1,0 +1,28 @@
+{
+    "name": "validate",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "dependencies": {
+        "express": "^4.16.2",
+        "socket.io": "^1.7.4"
+    },
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/LinX9581/validate.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/LinX9581/validate/issues"
+    },
+    "homepage": "https://github.com/LinX9581/validate#readme",
+    "engines": {
+        "node": "10.15.3",
+        "npm": "6.4.1"
+    }
+}
