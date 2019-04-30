@@ -49,6 +49,8 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.0/dist/jquery.validate.min.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase.js"></script>
 
+    <script src="./firebase-config.js"></script>
+
     <script>
         $.validator.setDefaults({
             highlight: function(element) {
@@ -107,19 +109,6 @@
                 // maxlength: jQuery.format("詢問內容請輸入 1000 字以内。")
             }
         });
-
-
-        // Initialize Firebase
-        var config = {
-            apiKey: "AIzaSyAN29JToq7jGGiol4xRHWPk0lAB_U_kGPY",
-            authDomain: "artificial-intelligence-8da03.firebaseapp.com",
-            databaseURL: "https://artificial-intelligence-8da03.firebaseio.com",
-            projectId: "artificial-intelligence-8da03",
-            storageBucket: "artificial-intelligence-8da03.appspot.com",
-            messagingSenderId: "1095359509219"
-        };
-
-        firebase.initializeApp(config);
 
         var root = firebase.database().ref();
 
