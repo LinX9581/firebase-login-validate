@@ -6,16 +6,19 @@ var port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res){
-  res.sendFile(__dirname + '/index.html');
+app.get('/', function(req, res) {
+    res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
-  socket.on('chat message', function(msg){	//只要偵測到'chat message'事件發生
-    io.emit('chat message', msg);			//發送給所有連線進來的socket 內容為msg
-  });
+app.get('/login', function(req, res) {
+    res.sendFile(__dirname + '/login.html');
 });
 
-http.listen(port, function(){
-  console.log('listening on *:' + port);
+app.get('/signup', function(req, res) {
+    res.sendFile(__dirname + '/signup.html');
+});
+
+
+http.listen(port, function() {
+    console.log('listening on *:' + port);
 });
