@@ -80,19 +80,14 @@
 
                 var msgRef = root.child(name);
 
+                //把值即時丟到firebase
                 msgRef.push({
                     name: name,
                     email: email,
                     password: password
                 })
 
-                // var personData = {
-                // }
-                // console.log(personData)
-                //msgShow = `<li>${personData}</li>`
-                //$("#query").html(msgShow);
-
-                //輸出 item.name 
+                //再從firebase 把值顯示在頁面上
                 msgRef.on("value", function(snap) {
                     console.log(snap.val())
                     var alldata = snap.val();
@@ -107,10 +102,11 @@
                 })
 
                 $("#name").val('');
-                $("#mail").val('');
-                $("#phone").val('');
+                $("#email").val('');
+                $("#password").val('');
             })
-
+            
+            //
             $("#input-search").click(function() {
                 var search = $("#type-search").val()
                 var searchRef = root.child(search);
